@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop Chat Component</title>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Crimson+Pro">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesv2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/suggestions.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/apis.js') }}"></script>
+
+</head>
+
+<body style="overflow-x: hidden;">
+
+    <div class="custom-shape-divider-top-1733321391">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
+    </div>
+
+    <div class="bubble">
+        <h1 style="text-align:center;font-size:38px;"> Click on the chat button in the corner </h1>
+    </div>
+    <div id="chat-button" class="chat-button">
+        <img src="https://gist.githubusercontent.com/dataAnalystNaoMedical/1dd25419ffe0bfdcd9852dc8e7df4870/raw/286652d00db36e7a233dc024509309351240b6b5/naoframe1.svg"
+            alt="Chat" class="chat-icon" style="height: 80px;">
+    </div>
+
+    <div id="chat-window" class="chat-window hidden">
+
+        <div class="chat-header">
+            <div style="display: flex;align-content: flex-end;justify-content: right;align-items: center;">
+                <img src="https://gist.githubusercontent.com/dataAnalystNaoMedical/71ad56763e67ce9e24e805eff3d77c66/raw/88d974e36ab7c55565fe1ab76ebe09775ebbe1a2/naobot.svg"
+                    alt="Chat" class="chat-icon">
+                <span class="powered-by">Chat with your chart</span>
+            </div>
+
+            <div style="display: flex;align-content: flex-end;justify-content: right;align-items: center;">
+                <div id="reload-btn" class="reload-btn" title="Refresh" style="height: 28px;width: 28px;">
+                    <svg viewBox="0 0 24.00 24.00" xmlns="http://www.w3.org/2000/svg" fill="white">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M13.7071 1.29289C14.0976 1.68342 14.0976 2.31658 13.7071 2.70711L12.4053 4.00896C17.1877 4.22089 21 8.16524 21 13C21 17.9706 16.9706 22 12 22C7.02944 22 3 17.9706 3 13C3 12.4477 3.44772 12 4 12C4.55228 12 5 12.4477 5 13C5 16.866 8.13401 20 12 20C15.866 20 19 16.866 19 13C19 9.2774 16.0942 6.23349 12.427 6.01281L13.7071 7.29289C14.0976 7.68342 14.0976 8.31658 13.7071 8.70711C13.3166 9.09763 12.6834 9.09763 12.2929 8.70711L9.29289 5.70711C9.10536 5.51957 9 5.26522 9 5C9 4.73478 9.10536 4.48043 9.29289 4.29289L12.2929 1.29289C12.6834 0.902369 13.3166 0.902369 13.7071 1.29289Z">
+                            </path>
+                        </g>
+                    </svg>
+                </div>
+
+                <button id="minimize-btn" class="minimize-btn">
+                    <svg viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#f5f5f5"
+                        width="28px" height="28px">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#ffffff"
+                            stroke-width="1.296">
+                            <path
+                                d="M20.8571 9.75C21.2714 9.75 21.6071 9.41421 21.6071 9C21.6071 8.58579 21.2714 8.25 20.8571 8.25H16.8107L22.5303 2.53033C22.8232 2.23744 22.8232 1.76256 22.5303 1.46967C22.2374 1.17678 21.7626 1.17678 21.4697 1.46967L15.75 7.18934V3.14286C15.75 2.72864 15.4142 2.39286 15 2.39286C14.5858 2.39286 14.25 2.72864 14.25 3.14286V9C14.25 9.41421 14.5858 9.75 15 9.75H20.8571Z"
+                                fill="#ffffff"></path>
+                            <path
+                                d="M3.14286 14.25C2.72864 14.25 2.39286 14.5858 2.39286 15C2.39286 15.4142 2.72864 15.75 3.14286 15.75H7.18934L1.46967 21.4697C1.17678 21.7626 1.17678 22.2374 1.46967 22.5303C1.76256 22.8232 2.23744 22.8232 2.53033 22.5303L8.25 16.8107V20.8571C8.25 21.2714 8.58579 21.6071 9 21.6071C9.41421 21.6071 9.75 21.2714 9.75 20.8571V15C9.75 14.5858 9.41421 14.25 9 14.25H3.14286Z"
+                                fill="#ffffff"></path>
+                        </g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M20.8571 9.75C21.2714 9.75 21.6071 9.41421 21.6071 9C21.6071 8.58579 21.2714 8.25 20.8571 8.25H16.8107L22.5303 2.53033C22.8232 2.23744 22.8232 1.76256 22.5303 1.46967C22.2374 1.17678 21.7626 1.17678 21.4697 1.46967L15.75 7.18934V3.14286C15.75 2.72864 15.4142 2.39286 15 2.39286C14.5858 2.39286 14.25 2.72864 14.25 3.14286V9C14.25 9.41421 14.5858 9.75 15 9.75H20.8571Z"
+                                fill="#ffffff"></path>
+                            <path
+                                d="M3.14286 14.25C2.72864 14.25 2.39286 14.5858 2.39286 15C2.39286 15.4142 2.72864 15.75 3.14286 15.75H7.18934L1.46967 21.4697C1.17678 21.7626 1.17678 22.2374 1.46967 22.5303C1.76256 22.8232 2.23744 22.8232 2.53033 22.5303L8.25 16.8107V20.8571C8.25 21.2714 8.58579 21.6071 9 21.6071C9.41421 21.6071 9.75 21.2714 9.75 20.8571V15C9.75 14.5858 9.41421 14.25 9 14.25H3.14286Z"
+                                fill="#ffffff"></path>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+
+        <div id="chat-messages" class="chat-messages">
+            <!-- add wave background in chat-messages -->
+            <div class="wave-background">
+                <svg class="wave" viewBox="0 0 1440 320" style="z-index:-1;">
+                    <path
+                        d="M0,128L30,138.7C60,149,120,171,180,165.3C240,160,300,128,360,106.7C420,85,480,75,540,85.3C600,96,660,128,720,133.3C780,139,840,117,900,128C960,139,1020,213,1080,256C1140,299,1200,277,1260,256C1320,235,1380,213,1410,202.7L1440,192L1440,320L0,320Z" />
+                </svg>
+
+                <svg class="wave" viewBox="0 0 1440 320"
+                    style="animation-delay: -2s; transform: scale(-1, 1);z-index:-1">
+                    <path
+                        d="M0,128L30,138.7C60,149,120,171,180,165.3C240,160,300,128,360,106.7C420,85,480,75,540,85.3C600,96,660,128,720,133.3C780,139,840,117,900,128C960,139,1020,213,1080,256C1140,299,1200,277,1260,256C1320,235,1380,213,1410,202.7L1440,192L1440,320L0,320Z" />
+                </svg>
+
+                <svg class="wave" viewBox="0 0 1440 320"
+                    style="bottom: 40px; animation-delay: -1s; transform: scale(-1, 1);z-index:-1;fill:rgba(204, 251, 255, 0.64)">
+                    <path
+                        d="M0,128L30,138.7C60,149,120,171,180,165.3C240,160,300,128,360,106.7C420,85,480,75,540,85.3C600,96,660,128,720,133.3C780,139,840,117,900,128C960,139,1020,213,1080,256C1140,299,1200,277,1260,256C1320,235,1380,213,1410,202.7L1440,192L1440,320L0,320Z" />
+                </svg>
+
+            </div>
+        </div>
+
+
+        <div class="chat-input">
+            <div class="suggestion-section">
+                <!-- Accordion -->
+                <div class="accordion-container">
+                    <div class="accordion-header">
+                        Suggestions
+                        <svg id="up-arrow" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C12.2652 3 12.5196 3.10536 12.7071 3.29289L19.7071 10.2929C20.0976 10.6834 20.0976 11.3166 19.7071 11.7071C19.3166 12.0976 18.6834 12.0976 18.2929 11.7071L13 6.41421V20C13 20.5523 12.5523 21 12 21C11.4477 21 11 20.5523 11 20V6.41421L5.70711 11.7071C5.31658 12.0976 4.68342 12.0976 4.29289 11.7071C3.90237 11.3166 3.90237 10.6834 4.29289 10.2929L11.2929 3.29289C11.4804 3.10536 11.7348 3 12 3Z" fill="#fafafa"></path> </g></svg>
+                    </div>
+                    <div class="accordion-content" id="accordion-suggestions">
+                    <!-- Suggestions will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <textarea id="user-input" placeholder="Ask away"></textarea>
+                <button id="send-btn" class="send-btn">
+                    <svg width="161px" height="161px" viewBox="-3.84 -3.84 31.68 31.68" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" stroke="#264178">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path d="M20 12L4 4L6 12M20 12L4 20L6 12M20 12H6" stroke="#24325b" stroke-width="0.576"
+                                stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script id="wave-animation">
+        $(document).ready(function () {
+            let maxAmplitude = 10; //max 10px // Maximum amplitude for the wave
+            let direction = 1; // Direction of movement (1 for up, -1 for down)
+            let currentPosition = 70; // Current bottom position
+
+            // Function to change the bottom position of the waves
+            function updateWavePosition() {
+                // Update position based on current direction
+                currentPosition += direction;
+                // If the current position exceeds maxAmplitude or drops below 0, reverse direction
+                if (currentPosition >= maxAmplitude || currentPosition <= 0) {
+                    direction *= -1; // Reverse direction
+                }
+                // Apply the new bottom position
+                $('.wave').css('bottom', currentPosition + 'px');
+            }
+
+            // Start changing position every 100 milliseconds
+            setInterval(updateWavePosition, 1000);
+        });
+    </script>
+
+    <script id="suggestions-render">
+        // Sample data
+        const suggestions = [
+            {
+                message: "How to deal with stress",
+                attrMessage: "Detailed info about dealing with stress",
+            },
+            {
+                message: "Tips for better sleep",
+                attrMessage: "Detailed info about better sleep",
+            },
+            {
+                message: "How to stay focused",
+                attrMessage: "Detailed info about staying focused",
+            },
+            {
+                "message": "Muscle pain relief",
+                "attrMessage": "Dealing with muscle pain. Detailed ways to deal with muscle pain remedies and other suggestions such as which expert to see or medication or pain killers etc."
+            },
+            {
+                "message": "Headache remedy",
+                "attrMessage": "How to relieve a headache? Detailed information on headache remedies, including over-the-counter medications, lifestyle changes, and when to see a doctor."
+            },
+            {
+                "message": "Boost energy levels",
+                "attrMessage": "Feeling tired all the time. Tips for boosting energy levels, including diet, exercise, and sleep habits."
+            },
+            {
+                "message": "Manage stress anxiety",
+                "attrMessage": "Managing stress and anxiety. Techniques for relaxation, stress management, and when to seek professional help."
+            },
+            {
+                "message": "Skin problem treatment",
+                "attrMessage": "Common skin problems and treatments. Information on acne, eczema, psoriasis, and other skin conditions."
+            },
+            {
+                "message": "Improve digestion health",
+                "attrMessage": "Dealing with digestive issues like constipation, diarrhea, and bloating. Tips for improving digestive health."
+            },
+            {
+                "message": "Overcome sleep issues",
+                "attrMessage": "Overcoming sleep problems. Strategies for improving sleep quality, including sleep hygiene and relaxation techniques."
+            }
+        ];
+
+        // Elements
+        const accordionHeader = document.querySelector(".accordion-header");
+        const accordionContent = document.getElementById("accordion-suggestions");
+
+        // Toggle content visibility
+        accordionHeader.addEventListener("click", () => {
+            accordionContent.classList.toggle("activated");
+            const arrow = document.getElementById('up-arrow');
+            const currentRotation = parseInt(arrow.style.transform.split('rotate(')[1]) || 0;
+            const newRotation = (currentRotation + 180) % 360;
+            arrow.style.transform = `rotate(${newRotation}deg)`;
+        });
+
+        // Dynamically add suggestion messages
+        function addSuggestions(suggestionsArray, container) {
+            suggestionsArray.forEach((item) => {
+                const messageCell = document.createElement("div");
+                messageCell.className = "suggested-message";
+                messageCell.textContent = item.message;
+                messageCell.setAttribute("data-message", item.attrMessage);
+                container.appendChild(messageCell);
+            });
+        }
+
+        // interaction for suggestions - send custom message in request and display short message
+        document.getElementById('accordion-suggestions').addEventListener('click', (event) => {
+            if (event.target.classList.contains('suggested-message') && patientAccountNumber!==null) {
+                
+                const messageContent = event.target.getAttribute('data-message');
+                const messageLabel = event.target.textContent;
+                console.log(`${messageContent} requested for ${patientAccountNumber}`); // Print the data-message attribute
+                // Here, you can call your sendSuggestedMessage function with the message
+                sendSuggestedMessage(messageContent , messageLabel);
+            }else{
+                console.log(`> please make sure account number has been given`);
+                initializeChatbot();
+            }
+        });
+
+        // Initialize with sample data
+        addSuggestions(suggestions, accordionContent);
+    </script>
+
+</body>
+
+</html>
